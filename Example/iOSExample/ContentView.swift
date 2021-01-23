@@ -88,6 +88,9 @@ struct Basic: View {
       onSwipe: { card, direction in
         print("Swiped \(card.name) to \(direction)")
       },
+      onTap: { card in
+         print(card.name)
+      },
       content: { person, _, _ in
         CardView(person: person)
       }

@@ -10,6 +10,7 @@ where Data.Index: Hashable {
   private let data: Data
   private let id: KeyPath<Data.Element, ID>
   private let onSwipe: (Data.Element, Direction) -> Void
+  private let onTap: (Data.Element) -> Void
   private let content: (Data.Element, Direction?, Bool) -> Content
 
   public init(
@@ -17,12 +18,14 @@ where Data.Index: Hashable {
     data: Data,
     id: KeyPath<Data.Element, ID>,
     onSwipe: @escaping (Data.Element, Direction) -> Void,
+    onTap: @escaping (Data.Element) -> Void,
     @ViewBuilder content: @escaping (Data.Element, Direction?, Bool) -> Content
   ) {
     self.direction = direction
     self.data = data
     self.id = id
     self.onSwipe = onSwipe
+    self.onTap = onTap
     self.content = content
 
     self._currentIndex = State<Data.Index>(initialValue: data.startIndex)
@@ -61,6 +64,7 @@ where Data.Index: Hashable {
           )
       }
     )
+    .onTapGesture { onTap(self.data[index]) }
   }
 
 }
@@ -71,6 +75,7 @@ extension CardStack where Data.Element: Identifiable, ID == Data.Element.ID {
     direction: @escaping (Double) -> Direction?,
     data: Data,
     onSwipe: @escaping (Data.Element, Direction) -> Void,
+    onTap: @escaping (Data.Element) -> Void,
     @ViewBuilder content: @escaping (Data.Element, Direction?, Bool) -> Content
   ) {
     self.init(
@@ -78,6 +83,7 @@ extension CardStack where Data.Element: Identifiable, ID == Data.Element.ID {
       data: data,
       id: \Data.Element.id,
       onSwipe: onSwipe,
+      onTap: onTap,
       content: content
     )
   }
@@ -90,6 +96,7 @@ extension CardStack where Data.Element: Hashable, ID == Data.Element {
     direction: @escaping (Double) -> Direction?,
     data: Data,
     onSwipe: @escaping (Data.Element, Direction) -> Void,
+    onTap: @escaping (Data.Element) -> Void,
     @ViewBuilder content: @escaping (Data.Element, Direction?, Bool) -> Content
   ) {
     self.init(
@@ -97,6 +104,7 @@ extension CardStack where Data.Element: Hashable, ID == Data.Element {
       data: data,
       id: \Data.Element.self,
       onSwipe: onSwipe,
+      onTap: onTap,
       content: content
     )
   }

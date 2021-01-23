@@ -19,7 +19,8 @@ final class CardStackTests: XCTestCase {
     let view = CardStack(
       direction: LeftRight.direction,
       data: data,
-      onSwipe: { _, _ in }
+      onSwipe: { _, _ in },
+      onTap: {_ in }
     ) { index, _, _ in
       Text(String(index))
         .frame(width: 300, height: 300, alignment: .center)
